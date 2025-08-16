@@ -32,10 +32,16 @@ func getThirdPartyResponse(url string) map[string]any {
 
 	defer resp.Body.Close()
 
-	data := make(map[string]interface{})
-	//days := make(map[string]interface{})
+	data := make(map[string]any)
 
 	json.Unmarshal(body, &data)
+
+	// Check if data is empty
+	if len(data) == 0 {
+		data = map[string]any{
+			"error": "Please check the location or API Key provided",
+		}
+	}
 
 	return data
 }
