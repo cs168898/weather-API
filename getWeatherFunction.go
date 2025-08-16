@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,6 +15,7 @@ func getWeatherFunction(c *gin.Context) {
 	weatherAPIKey := os.Getenv("WEATHER_API")
 
 	location := c.Param("location")
+	location = strings.ToLower(location)
 	//date1 := c.Param("date1")
 	//date2 := c.Param("date2")
 
@@ -37,8 +39,16 @@ func getWeatherFunction(c *gin.Context) {
 
 		weatherDatas = getThirdPartyResponse(url)
 
-		// set the cache with the key and the weather data
-		setCache(key, Object{WeatherDatas: weatherDatas})
+		// Check if response is empty
+		if len(weatherDatas) == 0 {
+			weatherDatas = map[string]any{
+				"error": "Please check the location or API Key provided",
+			}
+		} else {
+			// if something exists inside the data
+			// set the cache with the key and the weather data
+			setCache(key, Object{WeatherDatas: weatherDatas})
+		}
 
 	}
 
