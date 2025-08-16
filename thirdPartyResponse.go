@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func getThirdPartyResponse(url string) map[string]interface{} {
+func getThirdPartyResponse(url string) map[string]any {
 
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {

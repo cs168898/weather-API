@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/go-redis/cache/v8"
 	"github.com/go-redis/redis/v8"
-	"time"
-	"os"
+	"github.com/joho/godotenv"
 )
 
 //type weatherData struct {
@@ -14,29 +15,31 @@ import (
 //	Description string `json:"description"`
 //}
 
-var weatherDatas = make(map[string]interface{})
+var weatherDatas = make(map[string]any)
 
 var mycache *cache.Cache
 
 func main() {
+
 	fmt.Print("Weather API Started\n")
 
+	godotenv.Load()
+
 	// initialize the redis cache
-	//initRedis()
+	mycache = initRedis()
 	// start the router and set up API endpoints
 	runRouter()
 
 	fmt.Print("Weather api Ended")
 }
 
-// this function returns the cache object address from the ''*cache.Cache' type
-func initRedis()(*cache.Cache) {
-	redisURL := os.Getenv("REDIS_URL")
-	
+// this function returns the cache object address from the ”*cache.Cache' type
+func initRedis() *cache.Cache {
+	redisAddr := "localhost:6379"
+
 	ring := redis.NewRing(&redis.RingOptions{
 		Addrs: map[string]string{
-			redisURL: ":6379",
-			"server2": ":6380",
+			"server1": redisAddr,
 		},
 	})
 

@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
+
+	"github.com/gin-gonic/gin"
 )
 
 // function to get the weather data
@@ -17,10 +18,10 @@ func getWeatherFunction(c *gin.Context) {
 	//date2 := c.Param("date2")
 
 	// define the key for the redis cache using the location and dates
-	//key := fmt.Sprintf("%s,%s,%s", location, "2025-08-15", "2025-08-15")
+	key := fmt.Sprintf("%s,%s,%s", location, "2025-08-15", "2025-08-15")
 	// check if the data is in the redis cache
 	cacheResult := Object{}
-	//cacheResult := checkRedisCache(key)
+	cacheResult = checkRedisCache(key)
 
 	// check if cachresult is empty, if its not empty then use it
 	// else call the third party api
@@ -37,7 +38,7 @@ func getWeatherFunction(c *gin.Context) {
 		weatherDatas = getThirdPartyResponse(url)
 
 		// set the cache with the key and the weather data
-		//setCache(key, Object{WeatherDatas: weatherDatas})
+		setCache(key, Object{WeatherDatas: weatherDatas})
 
 	}
 
