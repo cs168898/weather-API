@@ -67,3 +67,5 @@ API endpoints are to be implemented. The current codebase sets up the infrastruc
 - [ ] Integrate Redis `set` and `get` for caching weather responses
 - [ ] Filter and return only relevant weather data to users
 
+Roadmap.sh backend projects:
+https://roadmap.sh/projects/weather-api-wrapper-service

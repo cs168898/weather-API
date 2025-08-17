@@ -9,12 +9,6 @@ import (
 	"github.com/joho/godotenv"
 )
 
-//type weatherData struct {
-//	Address     string `json:"address"`
-//	Datetime    string `json:"datetime"`
-//	Description string `json:"description"`
-//}
-
 var weatherDatas = make(map[string]any)
 
 var mycache *cache.Cache
