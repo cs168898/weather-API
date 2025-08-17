@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	router "main/Router"
 	redis "main/redis"
+	router "main/router"
 
 	"github.com/joho/godotenv"
 )
