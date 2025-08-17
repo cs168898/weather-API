@@ -1,18 +1,20 @@
-package main
+package redis
 
 import (
 	"context"
 	"fmt"
 	"time"
 
+	models "main/models"
+
 	"github.com/go-redis/cache/v8"
 )
 
-func setCache(key string, value Object) {
-  fmt.Printf("Setting cache for key: %s\n", key)
+func SetCache(key string, value models.Object) {
+	fmt.Printf("Setting cache for key: %s\n", key)
 	ctx := context.TODO()
 
-	if err := mycache.Set(&cache.Item{
+	if err := myCache.Set(&cache.Item{
 		Ctx:   ctx,
 		Key:   key,
 		Value: value,

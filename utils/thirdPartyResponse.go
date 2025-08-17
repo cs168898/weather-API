@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"encoding/json"
@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func getThirdPartyResponse(url string) map[string]any {
+func GetThirdPartyResponse(url string) map[string]any {
 
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {

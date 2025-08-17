@@ -1,4 +1,4 @@
-package main
+package handlers
 
 import (
 	"fmt"
@@ -6,12 +6,17 @@ import (
 	"os"
 	"strings"
 
+	models "main/models"
+	redis "main/redis"
+	utils "main/utils"
+
 	"github.com/gin-gonic/gin"
 )
 
 // function to get the weather data
-func getWeatherFunction(c *gin.Context) {
+func GetWeatherFunction(c *gin.Context) {
 
+	var weatherDatas = make(map[string]any)
 	weatherAPIKey := os.Getenv("WEATHER_API")
 
 	location := c.Param("location")
@@ -22,8 +27,8 @@ func getWeatherFunction(c *gin.Context) {
 	// define the key for the redis cache using the location and dates
 	key := fmt.Sprintf("%s,%s,%s", location, "2025-08-15", "2025-08-15")
 	// check if the data is in the redis cache
-	cacheResult := Object{}
-	cacheResult = checkRedisCache(key)
+
+	cacheResult := redis.CheckRedisCache(key)
 
 	// check if cachresult is empty, if its not empty then use it
 	// else call the third party api
@@ -37,7 +42,7 @@ func getWeatherFunction(c *gin.Context) {
 		// this is the url that we will GET request to
 		url := fmt.Sprintf("https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/%s/%s/%s?key=%s&unitGroup=%s", location, "2025-08-15", "2025-08-15", weatherAPIKey, "metric")
 
-		weatherDatas = getThirdPartyResponse(url)
+		weatherDatas = utils.GetThirdPartyResponse(url)
 
 		// Check if response is empty
 		if len(weatherDatas) == 0 {
@@ -47,7 +52,7 @@ func getWeatherFunction(c *gin.Context) {
 		} else {
 			// if something exists inside the data
 			// set the cache with the key and the weather data
-			setCache(key, Object{WeatherDatas: weatherDatas})
+			redis.SetCache(key, models.Object{WeatherDatas: weatherDatas})
 		}
 
 	}
